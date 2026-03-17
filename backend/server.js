@@ -18,25 +18,20 @@ const user = {
 };
 
 // LOGIN
-app.post("/login", async (req, res) => {
+app.post("/login", (req, res) => {
 
   const { email, password } = req.body;
 
-  if(email !== user.email){
-    return res.status(401).json({ error:"User falsch" });
+  if (email !== "admin") {
+    return res.status(401).json({ error: "User falsch" });
   }
 
- if(password !== "UltraSecure123!"){
-  return res.status(401).json({ error: "Passwort falsch" });
-}
+  if (password !== "UltraSecure123!") {
+    return res.status(401).json({ error: "Passwort falsch" });
   }
 
-  const token = jwt.sign({ email }, JWT_SECRET, { expiresIn:"2h" });
+  const token = jwt.sign({ email }, JWT_SECRET, { expiresIn: "2h" });
 
   res.json({ token });
 
-});
-
-app.listen(PORT, () => {
-  console.log("Server läuft auf http://localhost:3000");
 });

@@ -51,56 +51,32 @@ canvas {
 </div>
 
 <script>
-
-let chart;
-
 async function login() {
 
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
 
-  const res = const res = await fetch("https://ai-trading-production-2f39.up.railway.app/login", {
-    method:"POST",
-    headers: {
-      "Content-Type":"application/json"
-    },
-    body: JSON.stringify({ email, password })
-  });
+  try {
+    const res = await fetch("https://ai-trading-production-2f39.up.railway.app/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ email, password })
+    });
 
-  const data = await res.json();
+    const data = await res.json();
 
-  if(data.token){
-    document.getElementById("status").innerText = "Login erfolgreich ✅";
-    loadData();
-  } else {
-    document.getElementById("status").innerText = "Login fehlgeschlagen ❌";
-  }
-}
-
-function loadData(){
-
-  let data = [];
-
-  for(let i=0;i<20;i++){
-    data.push(100 + Math.random()*20);
-  }
-
-  if(chart) chart.destroy();
-
-  chart = new Chart(document.getElementById("chart"), {
-    type:"line",
-    data:{
-      labels:data.map((_,i)=>i),
-      datasets:[{
-        label:"Markt",
-        data:data
-      }]
+    if(data.token){
+      document.getElementById("status").innerText = "Login erfolgreich ✅";
+    } else {
+      document.getElementById("status").innerText = "Fehler beim Login ❌";
     }
-  });
 
+  } catch(err){
+    document.getElementById("status").innerText = "Server nicht erreichbar ❌";
+  }
 }
-
 </script>
-
 </body>
 </html>
